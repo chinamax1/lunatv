@@ -212,9 +212,14 @@ export const UserMenu: React.FC = () => {
   };
 
   const handleImageProxyUrlChange = (value: string) => {
-    setImageProxyUrl(value);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('imageProxyUrl', value);
+    try {
+      const url = new URL(value); // Validate URL format
+      setImageProxyUrl(url.toString());
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('imageProxyUrl', url.toString());
+      }
+    } catch (e) {
+      console.error('Invalid image proxy URL:', value);
     }
   };
 

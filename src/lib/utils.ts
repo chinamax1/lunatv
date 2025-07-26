@@ -37,7 +37,13 @@ export function processImageUrl(originalUrl: string): string {
   const proxyUrl = getImageProxyUrl();
   if (!proxyUrl) return originalUrl;
 
-  return `${proxyUrl}${encodeURIComponent(originalUrl)}`;
+  try {
+    const validatedProxyUrl = new URL(proxyUrl); // Validate proxy URL
+    return `${validatedProxyUrl.toString()}${encodeURIComponent(originalUrl)}`;
+  } catch (e) {
+    console.error('Invalid proxy URL:', proxyUrl);
+    return originalUrl;
+  }
 }
 
 /**
